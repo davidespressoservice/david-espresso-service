@@ -4,31 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>David Espresso Service | Coffee Supply & Machine Rental Melbourne</title>
+<title>David Espresso Service | Coffee Supply Melbourne</title>
 
-<meta name="description" content="DavidEspressoService Group: Coffee supply, espresso machine rental & repair services in Melbourne, VIC. 4 Arabica + 1 Indian Robusta professional blend. Complete service for cafés, offices, and restaurants around Melbourne.">
-<meta name="keywords" content="coffee supplier Melbourne, espresso machine rental Melbourne, coffee machine repair Melbourne, commercial coffee machines VIC, premium coffee blend, David Espresso Service">
-<meta name="author" content="DavidEspressoService Group">
-
-<meta property="og:title" content="DavidEspressoService Group - Espresso Solutions Melbourne VIC">
-<meta property="og:description" content="Premium coffee blend, machine rental & professional repair services in Melbourne.">
-<meta property="og:type" content="website">
+<meta name="description" content="David Espresso Service Melbourne. Premium coffee blend, espresso machine rental, sales and repair services in Melbourne VIC.">
+<meta name="keywords" content="coffee supplier Melbourne, espresso machine rental Melbourne, coffee machine repair Melbourne, Campbellfield coffee service">
+<meta name="author" content="David Espresso Service">
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
 
-/* ===== GENERAL ===== */
+/* ===== RESET ===== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
-    margin: 0;
     font-family: 'Montserrat', sans-serif;
-    background-color: #0e0e0e;
-    color: #ffffff;
+    background-color: #0f0f0f;
+    color: white;
     line-height: 1.6;
 }
 
-h1, h2 {
+h1, h2, h3 {
     font-family: 'Playfair Display', serif;
 }
 
@@ -36,119 +37,111 @@ h1, h2 {
     color: #c8a24d;
 }
 
-section {
-    padding: 80px 12%;
-}
+/* ===== HERO SECTION ===== */
 
-/* ===== HEADER ===== */
-
-header {
-    height: 100vh;
-    background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
-                url('images/coffee-hero.jpg') center/cover no-repeat;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.hero {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                url('images/coffee-hero.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 140px 20px;
     text-align: center;
-    padding: 20px;
 }
 
-.hero-content {
-    max-width: 900px;
-}
-
-h1 {
-    font-size: 3.8rem;
+.hero h1 {
+    font-size: 3.5rem;
     margin-bottom: 20px;
 }
 
-.hero-sub {
-    font-size: 1.3rem;
+.hero p {
+    font-size: 1.2rem;
     margin-bottom: 35px;
 }
 
-/* ===== BUTTONS ===== */
-
 .button {
-    background-color: #c8a24d;
-    color: #000;
-    padding: 15px 35px;
-    text-decoration: none;
-    font-weight: 600;
-    border-radius: 6px;
-    border: 2px solid #c8a24d;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-    transition: all 0.3s ease;
     display: inline-block;
+    background: #c8a24d;
+    color: black;
+    padding: 15px 35px;
     margin: 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
 }
 
 .button:hover {
-    background-color: #ffffff;
-    transform: translateY(-3px);
+    background: white;
 }
 
-/* ===== SERVICES ===== */
+/* ===== SECTIONS ===== */
+
+section {
+    padding: 90px 12%;
+}
 
 .services {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 40px;
+    margin-top: 50px;
 }
 
 .card {
-    background-color: #1a1a1a;
+    background: #1b1b1b;
     padding: 30px;
     border-radius: 8px;
     text-align: center;
-    transition: 0.3s;
 }
 
 .card img {
     width: 100%;
     border-radius: 6px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
-.card:hover {
-    transform: translateY(-8px);
+/* ===== CTA ===== */
+
+.cta {
+    text-align: center;
+    background: #111;
 }
 
 /* ===== FOOTER ===== */
 
 footer {
-    background-color: #000;
+    background: black;
+    padding: 60px 20px;
     text-align: center;
-    padding: 50px 20px;
     font-size: 0.9rem;
     color: #aaa;
 }
 
 /* ===== RESPONSIVE ===== */
 
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
 
-    header {
-        height: 70vh;
+    .hero {
+        padding: 100px 20px;
     }
 
-    h1 {
+    .hero h1 {
         font-size: 2.2rem;
     }
 
-    .hero-sub {
+    .hero p {
         font-size: 1rem;
     }
 
     section {
-        padding: 60px 8%;
+        padding: 70px 8%;
     }
 
     .button {
         display: block;
-        margin: 12px auto;
-        font-size: 0.9rem;
+        margin: 15px auto;
         padding: 12px 25px;
+        font-size: 0.9rem;
     }
 }
 
@@ -157,42 +150,39 @@ footer {
 
 <body>
 
-<!-- ===== HERO ===== -->
+<!-- HERO -->
 
-<header>
-    <div class="hero-content">
-        <h1>DavidEspressoService Group</h1>
-        <p class="hero-sub">
-            Coffee Supply, Espresso Machine Rental, Sales & Repair Services in Melbourne & Surrounding Areas
-        </p>
+<div class="hero">
+    <h1>David Espresso Service</h1>
+    <p>Premium Coffee Supply, Machine Rental & Repairs in Melbourne</p>
 
-        <a href="tel:0450785609" class="button">Call 045 078 5609</a>
-        <a href="mailto:davidespressoservice@gmail.com" class="button">Email Us</a>
-        <a href="shop.html" class="button">Shop Coffee</a>
-    </div>
-</header>
+    <a href="tel:0450785609" class="button">Call 045 078 5609</a>
+    <a href="mailto:davidespressoservice@gmail.com" class="button">Email Us</a>
+    <a href="shop.html" class="button">Shop Coffee</a>
+</div>
 
-<!-- ===== ABOUT ===== -->
+<!-- ABOUT -->
 
 <section>
     <h2 class="gold">About Us</h2>
     <p>
-        DavidEspressoService Group provides professional espresso solutions for cafés, restaurants, offices, and hospitality venues in Melbourne.
-        From premium coffee supply to machine rental, sales, and on-site repairs, we ensure your business runs smoothly without interruption.
+        Located in Campbellfield, Melbourne, David Espresso Service provides complete coffee solutions
+        for cafés, restaurants, and offices. We supply premium coffee, offer machine rental or sales,
+        and provide fast on-site repairs to keep your business running without interruption.
     </p>
 </section>
 
-<!-- ===== BLEND ===== -->
+<!-- BLEND -->
 
 <section>
     <h2 class="gold">Our Signature Blend</h2>
     <p>
-        Our exclusive blend combines 4 premium Arabica selections with 1 Indian Robusta.
-        Expect rich body, dense crema, balanced aroma, and consistent professional extraction.
+        Our blend combines 4 premium Arabica beans with 1 Indian Robusta,
+        delivering rich crema, balanced acidity and full body — perfect for professional espresso extraction.
     </p>
 </section>
 
-<!-- ===== SERVICES ===== -->
+<!-- SERVICES -->
 
 <section>
     <h2 class="gold">Our Services</h2>
@@ -202,60 +192,53 @@ footer {
         <div class="card">
             <img src="images/service1.jpg" alt="Coffee Supply">
             <h3>Coffee Supply</h3>
-            <p>Premium coffee tailored for cafés, restaurants and offices.</p>
+            <p>High-quality coffee for hospitality businesses.</p>
         </div>
 
         <div class="card">
             <img src="images/service2.jpg" alt="Machine Rental">
             <h3>Machine Rental & Sales</h3>
-            <p>Flexible rental or purchase options for commercial espresso machines.</p>
+            <p>Flexible rental or purchase solutions.</p>
         </div>
 
         <div class="card">
             <img src="images/service3.jpg" alt="Repairs">
             <h3>On-Site Repairs</h3>
-            <p>Fast technical assistance to minimize downtime.</p>
+            <p>Fast technical support across Melbourne.</p>
         </div>
 
         <div class="card">
-            <img src="images/service4.jpg" alt="Replacement Machine">
+            <img src="images/service4.jpg" alt="Replacement">
             <h3>Temporary Replacement</h3>
-            <p>Replacement machines available while yours is being repaired.</p>
-        </div>
-
-        <div class="card">
-            <img src="images/service5.jpg" alt="Caffeismo">
-            <h3>Caffeismo</h3>
-            <p>Our passion for delivering the perfect espresso every time.</p>
+            <p>Replacement machines available during repairs.</p>
         </div>
 
     </div>
 </section>
 
-<!-- ===== CTA ===== -->
+<!-- CTA -->
 
-<section style="text-align:center;">
-    <h2>Ready to Elevate Your Coffee Service?</h2>
-    <p>Partner with a trusted espresso specialist in Melbourne.</p>
+<section class="cta">
+    <h2>Ready to Upgrade Your Coffee Service?</h2>
+    <p>Contact Melbourne’s trusted espresso specialist today.</p>
 
     <a href="tel:0450785609" class="button">Call Now</a>
-    <a href="shop.html" class="button">Buy Coffee Online</a>
 </section>
 
-<!-- ===== LOCATION ===== -->
+<!-- LOCATION -->
 
 <section>
     <h2 class="gold">Location</h2>
     <p><strong>57 Malcolm Place, Campbellfield VIC 3061, Melbourne</strong></p>
 </section>
 
-<!-- ===== FOOTER ===== -->
+<!-- FOOTER -->
 
 <footer>
-    <p><strong>DavidEspressoService Group</strong></p>
+    <p><strong>David Espresso Service</strong></p>
     <p>Phone: 045 078 5609</p>
     <p>Email: davidespressoservice@gmail.com</p>
-    <p>57 Malcolm Place, Campbellfield VIC 3061, Melbourne VIC</p>
+    <p>57 Malcolm Place, Campbellfield VIC 3061</p>
 </footer>
 
 </body>
