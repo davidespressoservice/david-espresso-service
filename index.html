@@ -15,49 +15,22 @@
 <style>
 
 /* ===== RESET ===== */
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Montserrat', sans-serif; background-color:#0f0f0f; color:white; line-height:1.6; }
+h1,h2,h3 { font-family: 'Playfair Display', serif; }
+.gold { color: #c8a24d; }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Montserrat', sans-serif;
-    background-color: #0f0f0f;
-    color: white;
-    line-height: 1.6;
-}
-
-h1, h2, h3 {
-    font-family: 'Playfair Display', serif;
-}
-
-.gold {
-    color: #c8a24d;
-}
-
-/* ===== HERO SECTION ===== */
-
+/* ===== HERO ===== */
 .hero {
     background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
-                url('images/coffee-hero.jpg');
+                url('images/hero.jpg');
     background-size: cover;
     background-position: center;
     padding: 140px 20px;
     text-align: center;
 }
-
-.hero h1 {
-    font-size: 3.5rem;
-    margin-bottom: 20px;
-}
-
-.hero p {
-    font-size: 1.2rem;
-    margin-bottom: 35px;
-}
-
+.hero h1 { font-size: 3.5rem; margin-bottom: 20px; }
+.hero p { font-size: 1.2rem; margin-bottom: 35px; }
 .button {
     display: inline-block;
     background: #c8a24d;
@@ -69,80 +42,32 @@ h1, h2, h3 {
     text-decoration: none;
     transition: 0.3s;
 }
-
-.button:hover {
-    background: white;
-}
+.button:hover { background: white; }
 
 /* ===== SECTIONS ===== */
-
-section {
-    padding: 90px 12%;
-}
-
+section { padding: 90px 12%; }
 .services {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 40px;
     margin-top: 50px;
 }
-
-.card {
-    background: #1b1b1b;
-    padding: 30px;
-    border-radius: 8px;
-    text-align: center;
-}
-
-.card img {
-    width: 100%;
-    border-radius: 6px;
-    margin-bottom: 20px;
-}
+.card { background: #1b1b1b; padding:30px; border-radius:8px; text-align:center; }
+.card img { width:100%; border-radius:6px; margin-bottom:20px; }
 
 /* ===== CTA ===== */
-
-.cta {
-    text-align: center;
-    background: #111;
-}
+.cta { text-align:center; background:#111; }
 
 /* ===== FOOTER ===== */
-
-footer {
-    background: black;
-    padding: 60px 20px;
-    text-align: center;
-    font-size: 0.9rem;
-    color: #aaa;
-}
+footer { background:black; padding:60px 20px; text-align:center; font-size:0.9rem; color:#aaa; }
 
 /* ===== RESPONSIVE ===== */
-
-@media (max-width: 768px) {
-
-    .hero {
-        padding: 100px 20px;
-    }
-
-    .hero h1 {
-        font-size: 2.2rem;
-    }
-
-    .hero p {
-        font-size: 1rem;
-    }
-
-    section {
-        padding: 70px 8%;
-    }
-
-    .button {
-        display: block;
-        margin: 15px auto;
-        padding: 12px 25px;
-        font-size: 0.9rem;
-    }
+@media (max-width:768px){
+    .hero { padding:100px 20px; }
+    .hero h1 { font-size:2.2rem; }
+    .hero p { font-size:1rem; }
+    section { padding:70px 8%; }
+    .button { display:block; margin:15px auto; font-size:0.9rem; padding:12px 25px; }
 }
 
 </style>
@@ -151,18 +76,15 @@ footer {
 <body>
 
 <!-- HERO -->
-
 <div class="hero">
     <h1>David Espresso Service</h1>
     <p>Premium Coffee Supply, Machine Rental & Repairs in Melbourne</p>
-
     <a href="tel:0450785609" class="button">Call 045 078 5609</a>
     <a href="mailto:davidespressoservice@gmail.com" class="button">Email Us</a>
     <a href="shop.html" class="button">Shop Coffee</a>
 </div>
 
 <!-- ABOUT -->
-
 <section>
     <h2 class="gold">About Us</h2>
     <p>
@@ -173,7 +95,6 @@ footer {
 </section>
 
 <!-- BLEND -->
-
 <section>
     <h2 class="gold">Our Signature Blend</h2>
     <p>
@@ -183,57 +104,51 @@ footer {
 </section>
 
 <!-- SERVICES -->
-
 <section>
     <h2 class="gold">Our Services</h2>
-
     <div class="services">
-
         <div class="card">
             <img src="images/service1.jpg" alt="Coffee Supply">
             <h3>Coffee Supply</h3>
             <p>High-quality coffee for hospitality businesses.</p>
         </div>
-
         <div class="card">
             <img src="images/service2.jpg" alt="Machine Rental">
             <h3>Machine Rental & Sales</h3>
             <p>Flexible rental or purchase solutions.</p>
         </div>
-
         <div class="card">
             <img src="images/service3.jpg" alt="Repairs">
             <h3>On-Site Repairs</h3>
             <p>Fast technical support across Melbourne.</p>
         </div>
-
         <div class="card">
-            <img src="images/service4.jpg" alt="Replacement">
+            <img src="images/service4.jpg" alt="Replacement Machine">
             <h3>Temporary Replacement</h3>
             <p>Replacement machines available during repairs.</p>
         </div>
-
+        <div class="card">
+            <img src="images/service5.jpg" alt="Caffeismo">
+            <h3>Caffeismo</h3>
+            <p>Our unique philosophy of coffee craftsmanship.</p>
+        </div>
     </div>
 </section>
 
 <!-- CTA -->
-
 <section class="cta">
     <h2>Ready to Upgrade Your Coffee Service?</h2>
     <p>Contact Melbourne’s trusted espresso specialist today.</p>
-
     <a href="tel:0450785609" class="button">Call Now</a>
 </section>
 
 <!-- LOCATION -->
-
 <section>
     <h2 class="gold">Location</h2>
     <p><strong>57 Malcolm Place, Campbellfield VIC 3061, Melbourne</strong></p>
 </section>
 
 <!-- FOOTER -->
-
 <footer>
     <p><strong>David Espresso Service</strong></p>
     <p>Phone: 045 078 5609</p>
