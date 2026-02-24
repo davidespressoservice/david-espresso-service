@@ -3,179 +3,126 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Shop Coffee | David Espresso Service Melbourne</title>
-
-<meta name="description" content="Buy premium espresso coffee in Melbourne. 1kg $50 retail or save with our business subscription program.">
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+<title>David Espresso Service - Shop</title>
+<script src="https://js.stripe.com/v3/"></script>
 
 <style>
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
-    font-family: 'Montserrat', sans-serif;
-    background-color: #0f0f0f;
-    color: white;
-}
-
-h1, h2 {
-    font-family: 'Playfair Display', serif;
-}
-
-.gold {
-    color: #c8a24d;
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    text-align: center;
+    padding: 40px;
 }
 
 .container {
-    padding: 100px 12%;
-}
-
-.product {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: center;
-    margin-bottom: 100px;
-}
-
-.product img {
-    width: 100%;
-    border-radius: 8px;
-}
-
-.price {
-    font-size: 2rem;
-    color: #c8a24d;
-    margin: 20px 0;
-}
-
-select {
-    padding: 12px;
-    width: 100%;
-    margin-bottom: 20px;
-    border-radius: 6px;
-    border: none;
-}
-
-.button {
-    display: inline-block;
-    background: #c8a24d;
-    color: black;
-    padding: 15px 35px;
-    border-radius: 6px;
-    font-weight: 600;
-    text-decoration: none;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.button:hover {
     background: white;
+    padding: 30px;
+    max-width: 500px;
+    margin: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
 }
 
-.subscription-box {
-    background: #1b1b1b;
-    padding: 60px 40px;
-    border-radius: 8px;
-    text-align: center;
+h1 {
+    margin-bottom: 20px;
 }
 
-footer {
-    text-align: center;
-    padding: 60px 20px;
+input, button {
+    padding: 10px;
+    margin: 10px 0;
+    width: 90%;
+    font-size: 16px;
+}
+
+button {
     background: black;
-    color: #aaa;
-    margin-top: 100px;
+    color: white;
+    border: none;
+    cursor: pointer;
 }
 
-@media (max-width: 900px) {
-
-    .product {
-        grid-template-columns: 1fr;
-    }
-
-    .container {
-        padding: 80px 8%;
-    }
+button:hover {
+    background: #333;
 }
 
+.total {
+    font-size: 20px;
+    margin-top: 15px;
+}
 </style>
-
-<script>
-function orderRetail() {
-    const qty = document.getElementById("quantity").value;
-    const subject = "Retail Coffee Order - David Espresso Service";
-    const body = "Hello,%0D%0A%0D%0AI would like to order " + qty + " x 1kg Signature Blend at $50 per kg.%0D%0A%0D%0AName:%0D%0APhone:%0D%0AAddress:%0D%0A%0D%0AThank you.";
-
-    window.location.href = "mailto:davidespressoservice@gmail.com?subject=" + subject + "&body=" + body;
-}
-</script>
-
 </head>
 
 <body>
 
 <div class="container">
+    <h1>Buy Premium Coffee</h1>
 
-<h1>Shop Our Signature Blend</h1>
+    <label>Quantity (kg)</label>
+    <input type="number" id="quantity" value="1" min="1">
 
-<div class="product">
+    <label>Postcode</label>
+    <input type="text" id="postcode" placeholder="Enter postcode">
 
-    <div>
-        <img src="images/coffee-bag.jpg" alt="Signature Blend Coffee">
+    <button onclick="calculateTotal()">Calculate Total</button>
+
+    <div class="total">
+        Product: $<span id="productPrice">50</span><br>
+        Shipping: $<span id="shippingCost">0</span><br>
+        <strong>Total: $<span id="totalPrice">50</span></strong>
     </div>
 
-    <div>
-        <h2>Signature Espresso Blend</h2>
-        <p>
-            4 Premium Arabica beans + 1 Indian Robusta.
-            Rich crema, full body, balanced acidity.
-            Perfect for home and professional espresso machines.
-        </p>
-
-        <div class="price">$50.00 AUD / 1kg</div>
-
-        <label>Quantity:</label>
-        <select id="quantity">
-            <option value="1">1 Bag (1kg)</option>
-            <option value="2">2 Bags (2kg)</option>
-            <option value="5">5 Bags (5kg)</option>
-        </select>
-
-        <button class="button" onclick="orderRetail()">Order Now</button>
-
-    </div>
-
+    <button onclick="checkout()">Pay Now</button>
 </div>
 
-<!-- BUSINESS SUBSCRIPTION SECTION -->
+<script>
 
-<div class="subscription-box">
+// 🔹 Inserisci qui la chiave pubblica Stripe
+const stripe = Stripe('pk_live_51T4DmbH72MNXg8CJo8hIkHsR7iXZdGCk1iXi0uGDRVlm0RVoQAFQ9zoYi1pGFirVJ1z72QxQScX13sEniMFPt2uy00zWcvWEIc'); 
 
-    <h2 class="gold">Own a Café or Restaurant?</h2>
+const pricePerKg = 50;
+let shippingCost = 0;
 
-    <p style="margin:20px 0;">
-        Join our Coffee Subscription Program and pay from $40 per kg.
-        Includes free machine service every 6 months and priority support.
-    </p>
+async function calculateTotal() {
+    const qty = document.getElementById("quantity").value;
+    const postcode = document.getElementById("postcode").value;
 
-    <a href="subscription.html" class="button">View Subscription Plans</a>
+    const productTotal = qty * pricePerKg;
+    document.getElementById("productPrice").innerText = productTotal;
 
-</div>
+    try {
+        // 🔹 Endpoint Render per spedizione
+        const response = await fetch(https://https://david-espresso-service-1.onrender.com/calculate-shipping?postcode=${postcode}&weight=${qty});
+        const data = await response.json();
+        shippingCost = data.cost || 0;
+        document.getElementById("shippingCost").innerText = shippingCost;
 
-</div>
+        const total = productTotal + shippingCost;
+        document.getElementById("totalPrice").innerText = total;
 
-<footer>
-    <p><strong>David Espresso Service</strong></p>
-    <p>Melbourne VIC</p>
-    <p>045 078 5609</p>
-</footer>
+    } catch (err) {
+        alert("Shipping calculation failed");
+    }
+}
+
+async function checkout() {
+    const total = document.getElementById("totalPrice").innerText;
+
+    try {
+        const response = await fetch('https://david-espresso-service-1.onrender.com/create-checkout-session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ amount: total * 100 }) // Stripe usa centesimi
+        });
+
+        const session = await response.json();
+        stripe.redirectToCheckout({ sessionId: session.id });
+
+    } catch (err) {
+        alert("Checkout failed");
+    }
+}
+
+</script>
 
 </body>
 </html>
