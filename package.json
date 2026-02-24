@@ -1,19 +1,13 @@
 {
   "name": "david-espresso-service",
   "version": "1.0.0",
-  "description": "Backend per Shop David Espresso Service",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.18.2",
-    "stripe": "^14.11.0",
-    "node-fetch": "^3.3.2"
-  },
-  "engines": {
-    "node": ">=18.0.0"
-  },
-  "author": "David Espresso Service",
-  "license": "MIT"
+    "stripe": "^12.0.0",
+    "node-fetch": "^3.4.0"
+  }
 }
