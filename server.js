@@ -25,11 +25,14 @@ app.get('/calculate-shipping', async (req, res) => {
 
   try {
     const response = await fetch(
-      https://digitalapi.auspost.com.au/postage/parcel/domestic/calculate.json?${queryParams},
-      { headers: { 'AUTH-KEY': process.env.POSTAGE_API_KEY } }
+      https://digitalapi.auspost.com.au/postage/parcel/domestic/calculate.json?${queryParams.toString()},
+      {
+        headers: { 'AUTH-KEY': process.env.POSTAGE_API_KEY }
+      }
     );
 
     const data = await response.json();
+
     // Invia al client il costo totale della spedizione
     res.json({ cost: parseFloat(data.postage_result.total_cost) });
   } catch (err) {
@@ -45,18 +48,21 @@ app.post('/create-checkout-session', async (req, res) => {
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      line_items: [{
-        price_data: {
-          currency: 'aud',
-          product_data: { name: 'Coffee + Shipping' },
-          unit_amount: Math.round(amount * 100) // Stripe usa centesimi
-        },
-        quantity: 1
-      }],
+      line_items: [
+        {
+          price_data: {
+            currency: 'aud',
+            product_data: { name: 'Coffee + Shipping' },
+            unit_amount: Math.round(amount * 100) // Stripe usa centesimi
+          },
+          quantity: 1
+        }
+      ],
       mode: 'payment',
       success_url: 'https://davidespressoservice.github.io/success.html',
       cancel_url: 'https://davidespressoservice.github.io/cancel.html'
     });
+
     res.json({ id: session.id });
   } catch (err) {
     console.error(err);
