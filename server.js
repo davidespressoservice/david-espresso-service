@@ -1,6 +1,7 @@
 // server.js
 const express = require('express');
-const fetch = require('node-fetch');
+// Node 22 + node-fetch 3.x usa ESM, quindi dobbiamo importarlo così:
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
