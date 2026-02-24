@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Shop Coffee | David Espresso Service Melbourne</title>
+
+<meta name="description" content="Buy premium espresso coffee in Melbourne. 1kg $50 retail or save with our business subscription program.">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #0f0f0f;
+    color: white;
+}
+
+h1, h2 {
+    font-family: 'Playfair Display', serif;
+}
+
+.gold {
+    color: #c8a24d;
+}
+
+.container {
+    padding: 100px 12%;
+}
+
+.product {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    margin-bottom: 100px;
+}
+
+.product img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.price {
+    font-size: 2rem;
+    color: #c8a24d;
+    margin: 20px 0;
+}
+
+select {
+    padding: 12px;
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    border: none;
+}
+
+.button {
+    display: inline-block;
+    background: #c8a24d;
+    color: black;
+    padding: 15px 35px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.button:hover {
+    background: white;
+}
+
+.subscription-box {
+    background: #1b1b1b;
+    padding: 60px 40px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+footer {
+    text-align: center;
+    padding: 60px 20px;
+    background: black;
+    color: #aaa;
+    margin-top: 100px;
+}
+
+@media (max-width: 900px) {
+
+    .product {
+        grid-template-columns: 1fr;
+    }
+
+    .container {
+        padding: 80px 8%;
+    }
+}
+
+</style>
+
+<script>
+function orderRetail() {
+    const qty = document.getElementById("quantity").value;
+    const subject = "Retail Coffee Order - David Espresso Service";
+    const body = "Hello,%0D%0A%0D%0AI would like to order " + qty + " x 1kg Signature Blend at $50 per kg.%0D%0A%0D%0AName:%0D%0APhone:%0D%0AAddress:%0D%0A%0D%0AThank you.";
+
+    window.location.href = "mailto:davidespressoservice@gmail.com?subject=" + subject + "&body=" + body;
+}
+</script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Shop Our Signature Blend</h1>
+
+<div class="product">
+
+    <div>
+        <img src="images/coffee-bag.jpg" alt="Signature Blend Coffee">
+    </div>
+
+    <div>
+        <h2>Signature Espresso Blend</h2>
+        <p>
+            4 Premium Arabica beans + 1 Indian Robusta.
+            Rich crema, full body, balanced acidity.
+            Perfect for home and professional espresso machines.
+        </p>
+
+        <div class="price">$50.00 AUD / 1kg</div>
+
+        <label>Quantity:</label>
+        <select id="quantity">
+            <option value="1">1 Bag (1kg)</option>
+            <option value="2">2 Bags (2kg)</option>
+            <option value="5">5 Bags (5kg)</option>
+        </select>
+
+        <button class="button" onclick="orderRetail()">Order Now</button>
+
+    </div>
+
+</div>
+
+<!-- BUSINESS SUBSCRIPTION SECTION -->
+
+<div class="subscription-box">
+
+    <h2 class="gold">Own a Café or Restaurant?</h2>
+
+    <p style="margin:20px 0;">
+        Join our Coffee Subscription Program and pay from $40 per kg.
+        Includes free machine service every 6 months and priority support.
+    </p>
+
+    <a href="subscription.html" class="button">View Subscription Plans</a>
+
+</div>
+
+</div>
+
+<footer>
+    <p><strong>David Espresso Service</strong></p>
+    <p>Melbourne VIC</p>
+    <p>045 078 5609</p>
+</footer>
+
+</body>
+</html>
