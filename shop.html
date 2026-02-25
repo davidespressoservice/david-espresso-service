@@ -1,77 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>David Espresso Shop</title>
-  <script src="https://js.stripe.com/v3/"></script>
-  <style>
-    body { background-color: #000; color: #fff; font-family: Arial, sans-serif; padding: 20px; }
-    h1 { text-align: center; margin-bottom: 20px; }
-    .product { max-width: 400px; margin: 0 auto 30px auto; padding: 20px; border: 1px solid #444; border-radius: 10px; text-align: center; background-color: #111; }
-    .product img { width: 100%; border-radius: 10px; }
-    button { padding: 12px 25px; font-size: 16px; margin: 10px; cursor: pointer; border: none; border-radius: 5px; background-color: #f39c12; color: #000; font-weight: bold; }
-    input[type="text"] { padding: 8px; width: 80px; font-size: 16px; margin: 5px; border-radius: 5px; border: 1px solid #ccc; }
-    #totals { font-size: 18px; margin-top: 15px; font-weight: bold; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Shop Coffee | David Espresso Service Melbourne</title>
+
+<meta name="description" content="Buy premium espresso coffee in Melbourne. 1kg $50 retail or save with our business subscription program.">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #0f0f0f;
+    color: white;
+}
+
+h1, h2 {
+    font-family: 'Playfair Display', serif;
+}
+
+.gold {
+    color: #c8a24d;
+}
+
+.container {
+    padding: 100px 12%;
+}
+
+.product {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    margin-bottom: 100px;
+}
+
+.product img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.price {
+    font-size: 2rem;
+    color: #c8a24d;
+    margin: 20px 0;
+}
+
+select {
+    padding: 12px;
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    border: none;
+}
+
+.button {
+    display: inline-block;
+    background: #c8a24d;
+    color: black;
+    padding: 15px 35px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.button:hover {
+    background: white;
+}
+
+.subscription-box {
+    background: #1b1b1b;
+    padding: 60px 40px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+footer {
+    text-align: center;
+    padding: 60px 20px;
+    background: black;
+    color: #aaa;
+    margin-top: 100px;
+}
+
+@media (max-width: 900px) {
+
+    .product {
+        grid-template-columns: 1fr;
+    }
+
+    .container {
+        padding: 80px 8%;
+    }
+}
+
+</style>
+
+<script>
+function orderRetail() {
+    const qty = document.getElementById("quantity").value;
+    const subject = "Retail Coffee Order - David Espresso Service";
+    const body = "Hello,%0D%0A%0D%0AI would like to order " + qty + " x 1kg Signature Blend at $50 per kg.%0D%0A%0D%0AName:%0D%0APhone:%0D%0AAddress:%0D%0A%0D%0AThank you.";
+
+    window.location.href = "mailto:davidespressoservice@gmail.com?subject=" + subject + "&body=" + body;
+}
+</script>
+
 </head>
+
 <body>
 
-  <h1>David Espresso Shop</h1>
+<div class="container">
 
-  <div class="product">
-    <img src="caffeismo1.jpg" alt="1kg Coffee">
-    <h2>1kg Coffee</h2>
-    <p>Standard price: $50 AUD</p>
-    <label for="postcode">Destination ZIP:</label>
-    <input type="text" id="postcode" value="3049">
-    <button id="calculateShippingBtn">Calculate Shipping</button>
-    <p id="shippingCost">Shipping cost: $0</p>
-    <p id="totals">Total: $50</p>
-    <button id="checkoutBtn">Pay with Stripe</button>
-  </div>
+<h1>Shop Our Signature Blend</h1>
 
-  <script>
-    const coffeePrice = 50;
-    const backendURL = 'https://https://david-espresso-service-1.onrender.com'; // <-- replace with your Render URL
+<div class="product">
 
-    const shippingCostEl = document.getElementById('shippingCost');
-    const totalsEl = document.getElementById('totals');
+    <div>
+        <img src="images/coffee-bag.jpg" alt="Signature Blend Coffee">
+    </div>
 
-    document.getElementById('calculateShippingBtn').addEventListener('click', async () => {
-      const to_postcode = document.getElementById('postcode').value;
-      const length = 22, width = 16, height = 7.7, weight = 1.5;
+    <div>
+        <h2>Signature Espresso Blend</h2>
+        <p>
+            4 Premium Arabica beans + 1 Indian Robusta.
+            Rich crema, full body, balanced acidity.
+            Perfect for home and professional espresso machines.
+        </p>
 
-      try {
-        const res = await fetch(${backendURL}/calculate-shipping?to_postcode=${to_postcode}&length=${length}&width=${width}&height=${height}&weight=${weight});
-        const data = await res.json();
-        shippingCostEl.innerText = Shipping cost: $${data.cost};
-        totalsEl.innerText = Total: $${(coffeePrice + data.cost).toFixed(2)};
-      } catch (err) {
-        console.error(err);
-        shippingCostEl.innerText = 'Error calculating shipping';
-      }
-    });
+        <div class="price">$50.00 AUD / 1kg</div>
 
-    document.getElementById('checkoutBtn').addEventListener('click', async () => {
-      const shippingText = shippingCostEl.innerText.split('$')[1] || 0;
-      const totalAmount = coffeePrice + parseFloat(shippingText);
+        <label>Quantity:</label>
+        <select id="quantity">
+            <option value="1">1 Bag (1kg)</option>
+            <option value="2">2 Bags (2kg)</option>
+            <option value="5">5 Bags (5kg)</option>
+        </select>
 
-      try {
-        const res = await fetch(${backendURL}/create-checkout-session, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ amount: totalAmount })
-        });
-        const data = await res.json();
-        const stripe = Stripe('pk_live_51T4DmbH72MNXg8CJo8hIkHsR7iXZdGCk1iXi0uGDRVlm0RVoQAFQ9zoYi1pGFirVJ1z72QxQScX13sEniMFPt2uy00zWcvWEIc'); // <-- your public key
-        stripe.redirectToCheckout({ sessionId: data.id });
-      } catch (err) {
-        console.error(err);
-        alert('Payment error');
-      }
-    });
-  </script>
+        <button class="button" onclick="orderRetail()">Order Now</button>
+
+    </div>
+
+</div>
+
+<!-- BUSINESS SUBSCRIPTION SECTION -->
+
+<div class="subscription-box">
+
+    <h2 class="gold">Own a Café or Restaurant?</h2>
+
+    <p style="margin:20px 0;">
+        Join our Coffee Subscription Program and pay from $40 per kg.
+        Includes free machine service every 6 months and priority support.
+    </p>
+
+    <a href="subscription.html" class="button">View Subscription Plans</a>
+
+</div>
+
+</div>
+
+<footer>
+    <p><strong>David Espresso Service</strong></p>
+    <p>Melbourne VIC</p>
+    <p>045 078 5609</p>
+</footer>
 
 </body>
 </html>
