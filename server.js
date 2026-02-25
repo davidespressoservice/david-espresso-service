@@ -1,7 +1,6 @@
 // server.js
 const express = require('express');
-// Node 22 + node-fetch 3.x usa ESM, quindi import corretto:
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const fetch = require('node-fetch'); // v2 compatibile con Node 22
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
@@ -33,6 +32,8 @@ app.get('/calculate-shipping', async (req, res) => {
     );
 
     const data = await response.json();
+
+    // Invia al client il costo totale della spedizione
     res.json({ cost: parseFloat(data.postage_result.total_cost) });
   } catch (err) {
     console.error(err);
