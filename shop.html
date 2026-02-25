@@ -33,7 +33,7 @@
 
   <script>
     const coffeePrice = 50;
-    const backendURL = 'https://david-espresso-service.onrender.com'; // <-- Your Render URL
+    const backendURL = 'https://https://david-espresso-service-1.onrender.com'; // <-- replace with your Render URL
 
     const shippingCostEl = document.getElementById('shippingCost');
     const totalsEl = document.getElementById('totals');
@@ -64,7 +64,7 @@
           body: JSON.stringify({ amount: totalAmount })
         });
         const data = await res.json();
-        const stripe = Stripe('pk_live_51T4DmbH72MNXg8CJo8hIkHsR7iXZdGCk1iXi0uGDRVlm0RVoQAFQ9zoYi1pGFirVJ1z72QxQScX13sEniMFPt2uy00zWcvWEIc'); // <-- Your PUBLIC Stripe Key
+        const stripe = Stripe('pk_live_51T4DmbH72MNXg8CJo8hIkHsR7iXZdGCk1iXi0uGDRVlm0RVoQAFQ9zoYi1pGFirVJ1z72QxQScX13sEniMFPt2uy00zWcvWEIc'); // <-- your public key
         stripe.redirectToCheckout({ sessionId: data.id });
       } catch (err) {
         console.error(err);
