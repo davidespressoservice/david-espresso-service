@@ -1,19 +1,18 @@
 // server.js
 const express = require('express');
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const cors = require('cors');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+// Node 22 + node-fetch 3.x usa ESM, import corretto:
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 const app = express();
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
 
-// ===============================
-// AUSPOST SHIPPING CALCULATION
-// ===============================
+// --- Calcolo spedizione Postage API
 app.get('/calculate-shipping', async (req, res) => {
   const { to_postcode, length, width, height, weight } = req.query;
-  const from_postcode = '3049'; // warehouse
+  const from_postcode = '3049'; // Magazzino
 
   const queryParams = new URLSearchParams({
     from_postcode,
@@ -26,51 +25,45 @@ app.get('/calculate-shipping', async (req, res) => {
   });
 
   try {
+    // Template literal con backtick corretto
     const url = https://digitalapi.auspost.com.au/postage/parcel/domestic/calculate.json?${queryParams.toString()};
-    const response = await fetch(url, { headers: { 'AUTH-KEY': process.env.POSTAGE_API_KEY } });
+    const response = await fetch(url, {
+      headers: { 'AUTH-KEY': process.env.POSTAGE_API_KEY }
+    });
     const data = await response.json();
-
-    if (data?.postage_result?.total_cost) {
-      res.json({ cost: parseFloat(data.postage_result.total_cost) });
-    } else {
-      res.status(400).json({ cost: 0 });
-    }
+    res.json({ cost: parseFloat(data.postage_result.total_cost) });
   } catch (err) {
-    console.error('Shipping Error:', err);
-    res.status(500).json({ cost: 0 });
+    console.error(err);
+    res.status(500).json({ error: 'Shipping calculation failed' });
   }
 });
 
-// ===============================
-// STRIPE CHECKOUT
-// ===============================
+// --- Checkout Stripe
 app.post('/create-checkout-session', async (req, res) => {
   const { amount } = req.body;
-
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      mode: 'payment',
       line_items: [
         {
           price_data: {
             currency: 'aud',
-            product_data: { name: 'Coffee + Shipping' },
-            unit_amount: Math.round(amount * 100)
+            product_data: { name: '1kg Coffee' },
+            unit_amount: Math.round(amount * 100) // Converti in centesimi
           },
           quantity: 1
         }
       ],
-      success_url: 'https://yourdomain.com/success.html',
-      cancel_url: 'https://yourdomain.com/cancel.html'
+      mode: 'payment',
+      success_url: ${req.headers.origin}/success.html,
+      cancel_url: ${req.headers.origin}/shop.html
     });
-
     res.json({ id: session.id });
   } catch (err) {
-    console.error('Stripe Error:', err);
-    res.status(500).json({ error: 'Stripe error' });
+    console.error(err);
+    res.status(500).json({ error: 'Stripe session creation failed' });
   }
 });
 
-const PORT = process.env.PORT || 4242;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(Server running on port ${PORT}));
