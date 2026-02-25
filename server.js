@@ -1,17 +1,17 @@
 // server.js
 const express = require('express');
-// Import corretto di node-fetch per Node 22 + v3.x
+// Node 22 + node-fetch 3.x usa ESM, quindi import corretto:
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 app.use(express.json());
 
-// --- Calcolo spedizione Postage
+// --- Calcolo spedizione Postage API
 app.get('/calculate-shipping', async (req, res) => {
   const { to_postcode, length, width, height, weight } = req.query;
 
-  // Il tuo magazzino a Campbellfield VIC 3049
+  // Magazzino a Campbellfield VIC 3049
   const from_postcode = '3049';
 
   const queryParams = new URLSearchParams({
@@ -33,8 +33,6 @@ app.get('/calculate-shipping', async (req, res) => {
     );
 
     const data = await response.json();
-
-    // Invia al client il costo totale della spedizione
     res.json({ cost: parseFloat(data.postage_result.total_cost) });
   } catch (err) {
     console.error(err);
