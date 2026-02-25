@@ -64,7 +64,7 @@
           body: JSON.stringify({ amount: totalAmount })
         });
         const data = await res.json();
-        const stripe = Stripe('TUO_PUBLIC_KEY_STRIPE'); // sostituisci con la tua pubblica
+        const stripe = Stripe('pk_live_51T4DmbH72MNXg8CJo8hIkHsR7iXZdGCk1iXi0uGDRVlm0RVoQAFQ9zoYi1pGFirVJ1z72QxQScX13sEniMFPt2uy00zWcvWEIc'); // sostituisci con la tua pubblica
         stripe.redirectToCheckout({ sessionId: data.id });
       } catch (err) {
         console.error(err);
