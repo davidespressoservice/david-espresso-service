@@ -6,53 +6,13 @@
   <title>Shop Coffee - David Espresso</title>
   <script src="https://js.stripe.com/v3/"></script>
   <style>
-    body {
-      background-color: #000;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .product {
-      max-width: 400px;
-      margin: 0 auto 30px auto;
-      padding: 20px;
-      border: 1px solid #444;
-      border-radius: 10px;
-      text-align: center;
-      background-color: #111;
-    }
-    .product img {
-      width: 100%;
-      border-radius: 10px;
-    }
-    button {
-      padding: 12px 25px;
-      font-size: 16px;
-      margin: 10px;
-      cursor: pointer;
-      border: none;
-      border-radius: 5px;
-      background-color: #f39c12;
-      color: #000;
-      font-weight: bold;
-    }
-    input[type="text"] {
-      padding: 8px;
-      width: 80px;
-      font-size: 16px;
-      margin: 5px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-    #totals {
-      font-size: 18px;
-      margin-top: 15px;
-      font-weight: bold;
-    }
+    body { background-color: #000; color: #fff; font-family: Arial, sans-serif; padding: 20px; }
+    h1 { text-align: center; margin-bottom: 20px; }
+    .product { max-width: 400px; margin: 0 auto 30px auto; padding: 20px; border: 1px solid #444; border-radius: 10px; text-align: center; background-color: #111; }
+    .product img { width: 100%; border-radius: 10px; }
+    button { padding: 12px 25px; font-size: 16px; margin: 10px; cursor: pointer; border: none; border-radius: 5px; background-color: #f39c12; color: #000; font-weight: bold; }
+    input[type="text"] { padding: 8px; width: 80px; font-size: 16px; margin: 5px; border-radius: 5px; border: 1px solid #ccc; }
+    #totals { font-size: 18px; margin-top: 15px; font-weight: bold; }
   </style>
 </head>
 <body>
@@ -72,20 +32,18 @@
   </div>
 
   <script>
-    const coffeePrice = 50; // prezzo standard
+    const coffeePrice = 50;
+    const backendURL = 'https://david-espresso-service.onrender.com'; // METTI IL TUO URL RENDER
 
     const shippingCostEl = document.getElementById('shippingCost');
     const totalsEl = document.getElementById('totals');
 
     document.getElementById('calculateShippingBtn').addEventListener('click', async () => {
       const to_postcode = document.getElementById('postcode').value;
-      const length = 22;  // dimensioni box
-      const width = 16;
-      const height = 7.7;
-      const weight = 1.5;
+      const length = 22, width = 16, height = 7.7, weight = 1.5;
 
       try {
-        const res = await fetch(/calculate-shipping?to_postcode=${to_postcode}&length=${length}&width=${width}&height=${height}&weight=${weight});
+        const res = await fetch(${backendURL}/calculate-shipping?to_postcode=${to_postcode}&length=${length}&width=${width}&height=${height}&weight=${weight});
         const data = await res.json();
         shippingCostEl.innerText = Costo spedizione: $${data.cost};
         totalsEl.innerText = Totale: $${(coffeePrice + data.cost).toFixed(2)};
@@ -100,13 +58,13 @@
       const totalAmount = coffeePrice + parseFloat(shippingText);
 
       try {
-        const res = await fetch('/create-checkout-session', {
+        const res = await fetch(${backendURL}/create-checkout-session, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ amount: totalAmount })
         });
         const data = await res.json();
-        const stripe = Stripe('pk_live_51T4DmbH72MNXg8CJo8hIkHsR7iXZdGCk1iXi0uGDRVlm0RVoQAFQ9zoYi1pGFirVJ1z72QxQScX13sEniMFPt2uy00zWcvWEIc'); // sostituisci con la tua pubblica
+        const stripe = Stripe('TUO_PUBLIC_KEY_STRIPE'); // sostituisci con la tua pubblica
         stripe.redirectToCheckout({ sessionId: data.id });
       } catch (err) {
         console.error(err);
