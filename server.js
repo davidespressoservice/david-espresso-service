@@ -1,77 +1,89 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop Coffee - David Espresso</title>
-  <script src="https://js.stripe.com/v3/"></script>
-  <style>
-    body { background-color: #000; color: #fff; font-family: Arial, sans-serif; padding: 20px; }
-    h1 { text-align: center; margin-bottom: 20px; }
-    .product { max-width: 400px; margin: 0 auto 30px auto; padding: 20px; border: 1px solid #444; border-radius: 10px; text-align: center; background-color: #111; }
-    .product img { width: 100%; border-radius: 10px; }
-    button { padding: 12px 25px; font-size: 16px; margin: 10px; cursor: pointer; border: none; border-radius: 5px; background-color: #f39c12; color: #000; font-weight: bold; }
-    input[type="text"] { padding: 8px; width: 80px; font-size: 16px; margin: 5px; border-radius: 5px; border: 1px solid #ccc; }
-    #totals { font-size: 18px; margin-top: 15px; font-weight: bold; }
-  </style>
-</head>
-<body>
+// server.js
+const express = require('express');
+const fetch = require('node-fetch'); // versione 2.6.7
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const cors = require('cors');
 
-  <h1>David Espresso Shop</h1>
+const app = express();
+app.use(express.json());
+app.use(cors()); // permette chiamate da dominio differente
 
-  <div class="product">
-    <img src="caffeismo1.jpg" alt="Caffè 1kg">
-    <h2>Caffè 1kg</h2>
-    <p>Prezzo standard: $50 AUD</p>
-    <label for="postcode">CAP Destinazione:</label>
-    <input type="text" id="postcode" value="3049">
-    <button id="calculateShippingBtn">Calcola Spedizione</button>
-    <p id="shippingCost">Costo spedizione: $0</p>
-    <p id="totals">Totale: $50</p>
-    <button id="checkoutBtn">Paga con Stripe</button>
-  </div>
 
-  <script>
-    const coffeePrice = 50;
-    const backendURL = 'https://david-espresso-service.onrender.com'; // METTI IL TUO URL RENDER
+// ===============================
+// CALCOLO SPEDIZIONE AUSPOST
+// ===============================
+app.get('/calculate-shipping', async (req, res) => {
+  const { to_postcode, length, width, height, weight } = req.query;
+  const from_postcode = '3049'; // magazzino
 
-    const shippingCostEl = document.getElementById('shippingCost');
-    const totalsEl = document.getElementById('totals');
+  const queryParams = new URLSearchParams({
+    from_postcode: from_postcode,
+    to_postcode: to_postcode,
+    length: length,
+    width: width,
+    height: height,
+    weight: weight,
+    service_code: 'AUS_PARCEL_REGULAR'
+  });
 
-    document.getElementById('calculateShippingBtn').addEventListener('click', async () => {
-      const to_postcode = document.getElementById('postcode').value;
-      const length = 22, width = 16, height = 7.7, weight = 1.5;
+  try {
+    const url = 'https://digitalapi.auspost.com.au/postage/parcel/domestic/calculate.json?' + queryParams.toString();
 
-      try {
-        const res = await fetch(${backendURL}/calculate-shipping?to_postcode=${to_postcode}&length=${length}&width=${width}&height=${height}&weight=${weight});
-        const data = await res.json();
-        shippingCostEl.innerText = Costo spedizione: $${data.cost};
-        totalsEl.innerText = Totale: $${(coffeePrice + data.cost).toFixed(2)};
-      } catch (err) {
-        console.error(err);
-        shippingCostEl.innerText = Errore calcolo spedizione;
-      }
+    const response = await fetch(url, {
+      headers: { 'AUTH-KEY': process.env.POSTAGE_API_KEY }
     });
 
-    document.getElementById('checkoutBtn').addEventListener('click', async () => {
-      const shippingText = shippingCostEl.innerText.split('$')[1] || 0;
-      const totalAmount = coffeePrice + parseFloat(shippingText);
+    const data = await response.json();
+    if (data && data.postage_result && data.postage_result.total_cost) {
+      res.json({ cost: parseFloat(data.postage_result.total_cost) });
+    } else {
+      res.status(400).json({ cost: 0 });
+    }
 
-      try {
-        const res = await fetch(${backendURL}/create-checkout-session, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ amount: totalAmount })
-        });
-        const data = await res.json();
-        const stripe = Stripe('TUO_PUBLIC_KEY_STRIPE'); // sostituisci con la tua pubblica
-        stripe.redirectToCheckout({ sessionId: data.id });
-      } catch (err) {
-        console.error(err);
-        alert('Errore pagamento');
-      }
+  } catch (error) {
+    console.error('Shipping Error:', error);
+    res.status(500).json({ cost: 0 });
+  }
+});
+
+
+// ===============================
+// STRIPE CHECKOUT
+// ===============================
+app.post('/create-checkout-session', async (req, res) => {
+  const { amount } = req.body;
+
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      mode: 'payment',
+      line_items: [
+        {
+          price_data: {
+            currency: 'aud',
+            product_data: { name: 'Coffee + Shipping' },
+            unit_amount: Math.round(amount * 100)
+          },
+          quantity: 1
+        }
+      ],
+      success_url: 'https://davidespressoservice.github.io/success.html',
+      cancel_url: 'https://davidespressoservice.github.io/cancel.html'
     });
-  </script>
 
-</body>
-</html>
+    res.json({ id: session.id });
+
+  } catch (error) {
+    console.error('Stripe Error:', error);
+    res.status(500).json({ error: 'Stripe error' });
+  }
+});
+
+
+// ===============================
+// SERVER START
+// ===============================
+const PORT = process.env.PORT || 4242;
+app.listen(PORT, () => {
+  console.log('Server running on port ' + PORT);
+});
