@@ -1,8 +1,6 @@
-// server.js
 const express = require('express');
 const cors = require('cors');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-// Node 22 + node-fetch 3.x usa ESM, import corretto:
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 const app = express();
@@ -25,7 +23,6 @@ app.get('/calculate-shipping', async (req, res) => {
   });
 
   try {
-    // Template literal con backtick corretto
     const url = https://digitalapi.auspost.com.au/postage/parcel/domestic/calculate.json?${queryParams.toString()};
     const response = await fetch(url, {
       headers: { 'AUTH-KEY': process.env.POSTAGE_API_KEY }
@@ -49,7 +46,7 @@ app.post('/create-checkout-session', async (req, res) => {
           price_data: {
             currency: 'aud',
             product_data: { name: '1kg Coffee' },
-            unit_amount: Math.round(amount * 100) // Converti in centesimi
+            unit_amount: Math.round(amount * 100)
           },
           quantity: 1
         }
